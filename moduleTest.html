@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+	<script src="http://apps.bdimg.com/libs/angular.js/1.1.5/angular.min.js">
+</script>
+<!--script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.8.1/jquery.min.js">
+</script-->
+</head>
+<body ng-app="time">
+   <div ng-controller="Ctrl2">
+     Date format: <input ng-model="format">
+     <hr/>
+     Current time is: 
+     <span my-current-time>
+     </span>
+   </div>
+</body>
+
+	<script>
+angular.module('time', []).directive('myCurrentTime', 
+function($timeout, dateFilter) 
+{    return function(scope, element, attrs) {
+      
+      var format,timeoutId; 
+      function updateTime() {
+        element.text(dateFilter(new Date(), format));
+      }
+      scope.$watch('format', function(value) {
+        format = value;
+        updateTime();
+      });
+      
+      function updateLater() {
+        timeoutId = $timeout(function() {
+          updateTime();
+          updateLater(); 
+
+        }, 1000);
+      }
+      element.bind('$destroy', function() {
+        $timeout.cancel(timeoutId);
+        console.log(timeoutId);
+      });
+
+      updateLater(); 
+    }});
+
+
+ function Ctrl2($scope) {
+  $scope.format = 'M/d/yy h:mm:ss a';
+ }
+
+
+	</script>
+</html>

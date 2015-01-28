@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>MyNg</title>
+</head>
+<body zy>
+	<input type="text" zy-model="name"><br>
+	<span>name: {{name}}</span>
+
+	<script type="text/javascript">
+		var body = document.getElementsByTagName('body')[0];
+		var isNg = body.hasAttribute('zy');
+		
+		if(isNg) {
+			var input = body.getElementsByTagName('input')[0];
+			var span = body.getElementsByTagName('span')[0];
+			var html = span.innerHTML;
+
+			if(input.hasAttribute('zy-model')) {
+				var modelName = input.getAttribute('zy-model');
+				span.innerHTML = html.replace('{{'+modelName+'}}', input.value);
+				input.onkeyup = function() {
+					console.log('test')
+					span.innerHTML = html.replace('{{'+modelName+'}}', input.value);
+				}
+			}
+		}
+
+	</script>
+</body>
+</html>
